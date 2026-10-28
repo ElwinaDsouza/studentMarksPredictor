@@ -1,0 +1,196 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Student Performance Predictor</title>
+</head>
+<body>
+    <h1>Student Performance Predictor</h1>
+    <input type="number" id="attendance" placeholder="Attendance">
+    <input type="number" id="assignments" placeholder="Assignments">
+    <input type="number" id="exam" placeholder="Exam Score">
+    <button onclick="predict()">Predict</button>
+    <h2 id="result"></h2>
+
+    <script>
+        async function predict() {
+            const attendance = parseInt(document.getElementById("attendance").value);
+            const assignments = parseInt(document.getElementById("assignments").value);
+            const exam = parseInt(document.getElementById("exam").value);
+
+            const response = await fetch("http://127.0.0.1:5000/predict", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({attendance, assignments, exam})
+            });
+
+            const data = await response.json();
+            document.getElementById("result").innerText = "Predicted Grade: " + data.predicted_grade;
+        }
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Performance Predictor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <h1>Student Performance Predictor</h1>
+        <p class="subtitle">Predict grades and track student performance easily</p>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Intro / Instructions -->
+        <p class="intro-text">
+            Enter a student's attendance, assignments score, and exam score to predict their final grade.
+            The tool will also flag students at risk of failing, helping teachers intervene early.
+        </p>
+
+        <!-- Input Row -->
+        <div class="input-row">
+            <input type="number" id="attendance" placeholder="Attendance (%)">
+            <input type="number" id="assignments" placeholder="Assignments Score">
+            <input type="number" id="exam" placeholder="Exam Score">
+        </div>
+
+        <!-- Predict Button -->
+        <button onclick="predict()">Predict</button>
+
+        <!-- Risk Legend -->
+        <div class="risk-legend">
+            <span class="high">High Risk:</span> Student may fail (D/F) &nbsp; | &nbsp;
+            <span class="low">Low Risk:</span> Student likely to pass
+        </div>
+
+        <!-- Prediction History Table -->
+        <h2>Prediction History</h2>
+        <table id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Attendance</th>
+                    <th>Assignments</th>
+                    <th>Exam</th>
+                    <th>Predicted Grade</th>
+                    <th>Risk</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Predictions will appear here -->
+            </tbody>
+        </table>
+
+        <!-- Performance Chart -->
+        <h2>Performance Breakdown</h2>
+        <canvas id="performanceChart" width="400" height="200"></canvas>
+
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>© 2025 Student Predictor. All Rights Reserved.</p>
+    </footer>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let chart;               // Global chart variable
+let chartLabels = [];    // Keep track of students / predictions
+let attendanceData = [];
+let assignmentsData = [];
+let examData = [];
+
+async function predict() {
+    const attendance = parseInt(document.getElementById("attendance").value);
+    const assignments = parseInt(document.getElementById("assignments").value);
+    const exam = parseInt(document.getElementById("exam").value);
+
+    if(isNaN(attendance) || isNaN(assignments) || isNaN(exam)) {
+        alert("Please fill all fields with valid numbers.");
+        return;
+    }
+
+    const response = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({attendance, assignments, exam})
+    });
+
+    const data = await response.json();
+
+    // Add to table
+    const tbody = document.getElementById("resultsTable").querySelector("tbody");
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+        <td>${attendance}</td>
+        <td>${assignments}</td>
+        <td>${exam}</td>
+        <td class="grade">${data.predicted_grade}</td>
+        <td class="risk ${data.risk === "High" ? "high" : "low"}">${data.risk}</td>
+    `;
+
+    tbody.appendChild(tr);
+
+    // Update chart data
+    const studentNumber = tbody.rows.length;
+    chartLabels.push(`Student ${studentNumber}`);
+    attendanceData.push(attendance);
+    assignmentsData.push(assignments);
+    examData.push(exam);
+
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+
+    if(chart) {
+        chart.data.labels = chartLabels;
+        chart.data.datasets[0].data = attendanceData;
+        chart.data.datasets[1].data = assignmentsData;
+        chart.data.datasets[2].data = examData;
+        chart.update();
+    } else {
+        chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: chartLabels,
+                datasets: [
+                    {
+                        label: 'Attendance',
+                        data: attendanceData,
+                        backgroundColor: '#4a90e2'
+                    },
+                    {
+                        label: 'Assignments',
+                        data: assignmentsData,
+                        backgroundColor: '#f4a261'
+                    },
+                    {
+                        label: 'Exam',
+                        data: examData,
+                        backgroundColor: '#2a9d8f'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    }
+}
+</script>
+
+
+</body>
+</html>
+

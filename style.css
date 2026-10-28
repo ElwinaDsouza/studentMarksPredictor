@@ -1,0 +1,150 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body and Centering */
+body {
+    background: #f4f6f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+}
+
+/* Header */
+.site-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.site-header h1 {
+    font-size: 32px;
+    color: #233043;
+}
+
+.site-header .subtitle {
+    font-size: 16px;
+    color: #6d7a8a;
+}
+
+/* Main Container */
+.container {
+    width: 700px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Intro Text */
+.intro-text {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4a4a4a;
+    font-size: 16px;
+}
+
+/* Input Row */
+.input-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.input-row input {
+    width: 160px;
+    padding: 12px;
+    border: 1px solid #d1d7e0;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.input-row input:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+/* Button */
+button {
+    display: block;
+    margin: 0 auto 20px auto;
+    padding: 12px 25px;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #3b78c2;
+}
+
+/* Risk Legend */
+.risk-legend {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.risk-legend .high {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+.risk-legend .low {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Prediction Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    padding: 12px;
+    border: 1px solid #d1d7e0;
+    text-align: center;
+}
+
+table th {
+    background: #eef2f7;
+}
+
+.grade {
+    font-weight: bold;
+    color: #233043;
+}
+
+.risk.high {
+    color: #d9534f;
+    font-weight: bold;
+}
+
+.risk.low {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Footer */
+.site-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 15px;
+    background: #233043;
+    color: #ffffff;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 700px;
+}
