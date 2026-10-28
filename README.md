@@ -51,3 +51,4 @@ Input values
 │   └── index.html          # Application dashboard UI
 |   └── app.py                  # Flask application server & API routes
  
+<img width="940" height="438" alt="image" src="https://github.com/user-attachments/assets/277424ae-1c85-4efc-9da1-a91eefc9ea11" />
